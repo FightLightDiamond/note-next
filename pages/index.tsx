@@ -27,6 +27,7 @@ const Home: NextPage = () => {
      <button onClick={() => joinConversation(1)}>joinConversation</button>
      <button onClick={() => leaveConversation()}>leaveConversation</button>
      <button onClick={() => leaveConversation()}>leaveConversation</button>
+      1
     </div>
   )
 }
