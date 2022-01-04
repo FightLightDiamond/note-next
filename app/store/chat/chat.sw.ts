@@ -49,6 +49,9 @@ const getNewMessage = (dispatch: any) => {
   socket.on('some event', (res) => {
     alert(res)
   })
+  socket.on('cronSW', (res) => {
+    console.log('cronSW', res)
+  })
 }
 
 

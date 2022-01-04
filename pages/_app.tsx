@@ -6,15 +6,28 @@ import {createWrapper} from "next-redux-wrapper";
 // import {useDispatch} from "react-redux";
 // import {useEffect} from "react";
 // import {wsConnect} from "../app/store/ws/ws.slice";
+import { Web3ReactProvider } from '@web3-react/core';
+import { ethers } from 'ethers';
+
+function getLibrary(provider: any): ethers.providers.Web3Provider {
+  const library = new ethers.providers.Web3Provider(provider)
+  library.pollingInterval = 12000
+  return library
+}
 
 function MyApp({Component, pageProps}: AppProps) {
   // const dispatch = useDispatch();
   // useEffect(() => {
   //   dispatch(wsConnect(''))
   // }, [])
-  return <PersistGate loading={null} persistor={persistor}>
-    <Component {...pageProps} />
-  </PersistGate>
+
+  return (
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Component {...pageProps} />
+      </PersistGate>
+    </Web3ReactProvider>
+  )
 }
 
 const makestore = () => store;
