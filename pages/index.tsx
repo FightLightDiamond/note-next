@@ -1,6 +1,6 @@
 import type {NextPage} from 'next'
 import styles from '../styles/Home.module.css'
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useDispatch} from "react-redux";
 import {sendMessage} from "../app/store/chat/chat.slice";
 import {getNewMessage, createConversation, joinConversation, leaveConversation} from "../app/store/chat/chat.sw";
@@ -14,6 +14,8 @@ import {useTokenContract} from "../app/hooks";
 import MintNFT from "../app/wallet/actions/MintNFT";
 import TransferNFT from "../app/wallet/actions/TransferNFT";
 import Transaction from "../app/wallet/actions/Transaction";
+import * as htmlToImage from 'html-to-image';
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 
 /**
  *
@@ -194,8 +196,10 @@ const Home: NextPage = () => {
     }
   };
 
+  const ref = useRef<HTMLDivElement>(null)
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container} id="abc" ref={ref}>
       <input type="text" onChange={
         (e) => setMsg(e.target.value)
       }/>
@@ -242,6 +246,32 @@ const Home: NextPage = () => {
         const res = await transferNFT.execute()
         console.log({res})
       }}>Transaction NFT</button>
+
+      <button onClick={async () => {
+        // htmlToImage.toPng(document.getElementById('abc'))
+        //   .then(function (dataUrl) {
+        //     var img = new Image();
+        //     img.src = dataUrl;
+        //     document.body.appendChild(img);
+        //   });
+
+        // htmlToImage.toBlob(document.getElementById('abc'))
+        //   .then(function (blob) {
+        //     window.saveAs(blob, 'my-node.png');
+        //   });
+
+        toJpeg(ref.current, { cacheBust: true, })
+          .then((dataUrl) => {
+            console.log({dataUrl})
+            const link = document.createElement('a')
+            link.download = 'my-image-name.png'
+            link.href = dataUrl
+            link.click()
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      }}>Generate Image</button>
     </div>
   )
 }
