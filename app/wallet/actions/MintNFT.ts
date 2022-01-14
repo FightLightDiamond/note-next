@@ -11,18 +11,23 @@ export default class MintNFT extends MetaMarkConnect {
    * @param to
    */
   async execute (to: string) {
-    const address = await this.getAddress();
+    // const address = await this.getAddress();
+    // console.log({address})
+    console.log({to})
     const contract = await this.getSignerContract()
-    const tokenUri = this.getTokenUri('1')
-    const nonce = await this.getNoneString(address)
+    console.log({contract})
+    const tokenUri = this.getTokenUri('xxx')
+    console.log({tokenUri})
+    const nonce = await this.getNoneString(to)
+    console.log({nonce})
     const signature = await this.signData(nonce, tokenUri, to)
 
-    console.log({address, contract, tokenUri, nonce, signature})
+    // console.log({address, contract, tokenUri, nonce, signature})
 
     if (contract) {
-      const resultMintNFT = await contract.issueAssetByInvestor(address, tokenUri, nonce, signature);
+      const resultMintNFT = await contract.issueAssetByInvestor(to, tokenUri, nonce, signature);
 
-      console.log(resultMintNFT)
+      console.log({resultMintNFT})
 
       if (resultMintNFT) {
         const {hash} = resultMintNFT;
@@ -30,20 +35,19 @@ export default class MintNFT extends MetaMarkConnect {
 
       return resultMintNFT
     }
-    return {
-      signature
-    }
+    return '0k'
   }
 
   /**
    * get Sign Mint
    */
   async signData(nonce: string, tokenUri: string, to: string) {
-    const hexPrivateKey = config().hexPrivateKey;
-    const verifyingContract = config().verifyingContract;
+    const hexPrivateKey: string = config().hexPrivateKey;
+    const addressContract: string = config().addressContract;
+    console.log({addressContract, hexPrivateKey})
     const chainID = config().chainID;
 
-    if(!(hexPrivateKey && verifyingContract && chainID)) {
+    if(!(hexPrivateKey && addressContract && chainID)) {
       throw new Error('HexPrivateKey or verifyingContract empty')
     }
 
@@ -54,7 +58,7 @@ export default class MintNFT extends MetaMarkConnect {
         name: 'IPEX',
         version: '1.0.0',
         chainId: chainID,
-        verifyingContract: verifyingContract,
+        verifyingContract: addressContract, //0x9a6a99D57209385f0FcE2e7efAFD7DDA9c808297
       },
       {
         Mint: [

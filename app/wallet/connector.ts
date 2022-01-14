@@ -72,7 +72,8 @@ export default class MetaMarkConnect {
    */
   getSignerContract() {
     const signer = this.metaMark.getSigner();
-    return this.getContract(ADDRESS_CONTRACT, CONTRACT_ABI, signer);
+    const addressContract = config().addressContract;
+    return this.getContract(addressContract, CONTRACT_ABI, signer);
   }
 
   /**
@@ -116,15 +117,12 @@ export default class MetaMarkConnect {
    * get Asset Nft Contract
    */
   getAssetNftContract(): ethers.Contract {
-    const hexPrivateKey = config().hexPrivateKey;
+    const addressContract: string = config().addressContract;
     const defaultProvider = config().defaultProvider;
 
-    if(!(hexPrivateKey && defaultProvider)) {
-      throw new Error('HexPrivateKey or verifyingContract empty')
-    }
-
     const provider = ethers.getDefaultProvider(defaultProvider);
-    return new ethers.Contract(hexPrivateKey, CONTRACT_ABI, provider)
+    console.log({defaultProvider})
+    return new ethers.Contract(addressContract, CONTRACT_ABI, provider)
   }
 }
 

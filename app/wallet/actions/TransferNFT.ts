@@ -7,7 +7,7 @@ import {config} from "../../../config";
  * Transfer NFT
  */
 export default class TransferNFT extends MetaMarkConnect {
-  async execute( to: string, tokenId = '26') {
+  async execute( to: string, tokenId = '27') {
     try {
       const contract = await this.getSignerContract();
       const address = await this.getAddress();

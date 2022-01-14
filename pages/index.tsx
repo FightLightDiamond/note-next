@@ -10,12 +10,12 @@ import MetaMarkConnect, {connectMetaMark} from "../app/wallet/connector";
 import {ethers} from "ethers";
 import {message} from "antd";
 import CONTRACT_ABI from "../app/constants/abi/asset.json";
-import {useTokenContract} from "../app/hooks";
 import MintNFT from "../app/wallet/actions/MintNFT";
 import TransferNFT from "../app/wallet/actions/TransferNFT";
 import Transaction from "../app/wallet/actions/Transaction";
 import * as htmlToImage from 'html-to-image';
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
+import peerjs from "peerjs"
 
 /**
  *
@@ -230,14 +230,16 @@ const Home: NextPage = () => {
 
       <button onClick={async () => {
         const metaMark = new MintNFT(ethereum)
-        const res = await metaMark.execute(await metaMark.getAddress())
+        const address = await metaMark.getAddress()
+        const res = await metaMark.execute(address)
         console.log({res})
-        alert(res)
+        alert('0k')
       }}>Mint NFT</button>
 
       <button onClick={async () => {
+        console.log({ethereum})
         const transferNFT = new TransferNFT(ethereum)
-        const res = await transferNFT.execute('')
+        const res = await transferNFT.execute('0x5d214F695c2D9ccF94293aF8CD766Cb1d40642c3')
         console.log({res})
       }}>Transfer NFT</button>
 
@@ -260,17 +262,17 @@ const Home: NextPage = () => {
         //     window.saveAs(blob, 'my-node.png');
         //   });
 
-        toJpeg(ref.current, { cacheBust: true, })
-          .then((dataUrl) => {
-            console.log({dataUrl})
-            const link = document.createElement('a')
-            link.download = 'my-image-name.png'
-            link.href = dataUrl
-            link.click()
-          })
-          .catch((err) => {
-            console.log(err)
-          })
+        // toJpeg(ref.current, { cacheBust: true, })
+        //   .then((dataUrl) => {
+        //     console.log({dataUrl})
+        //     const link = document.createElement('a')
+        //     link.download = 'my-image-name.png'
+        //     link.href = dataUrl
+        //     link.click()
+        //   })
+        //   .catch((err) => {
+        //     console.log(err)
+        //   })
       }}>Generate Image</button>
     </div>
   )
