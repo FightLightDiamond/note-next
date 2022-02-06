@@ -3,8 +3,14 @@ import styles from '../styles/Home.module.css'
 import {useEffect, useRef, useState} from "react";
 import {useDispatch} from "react-redux";
 import {sendMessage} from "../app/store/chat/chat.slice";
-import {getNewMessage, createConversation, joinConversation, leaveConversation} from "../app/store/chat/chat.sw";
-import {nftmarketaddress, nftaddress} from "../.config";
+import {
+  getNewMessage,
+  createConversation,
+  joinConversation,
+  leaveConversation,
+  sentEvent, createRoom, joinRoom
+} from "../app/store/chat/chat.sw";
+// import {nftmarketaddress, nftaddress} from "../.config";
 import {useWeb3React} from '@web3-react/core'
 import MetaMarkConnect, {connectMetaMark} from "../app/wallet/connector";
 import {ethers} from "ethers";
@@ -13,9 +19,9 @@ import CONTRACT_ABI from "../app/constants/abi/asset.json";
 import MintNFT from "../app/wallet/actions/MintNFT";
 import TransferNFT from "../app/wallet/actions/TransferNFT";
 import Transaction from "../app/wallet/actions/Transaction";
-import * as htmlToImage from 'html-to-image';
-import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
-import peerjs from "peerjs"
+// import * as htmlToImage from 'html-to-image';
+// import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
+// import peerjs from "peerjs"
 
 /**
  *
@@ -203,15 +209,19 @@ const Home: NextPage = () => {
       <input type="text" onChange={
         (e) => setMsg(e.target.value)
       }/>
+
       <button onClick={() => {
         dispatch(sendMessage(msg))
-      }}>Send
-      </button>
+      }}>Send </button>
+
+      <button onClick={sentEvent}>sentEvent</button>
+      <button onClick={createRoom}>createRoom</button>
+      <button onClick={joinRoom}>joinRoom</button>
       <button onClick={() => createConversation({
-        id: 1
+        id: 2
       })}>createConversation
       </button>
-      <button onClick={() => joinConversation(1)}>joinConversation</button>
+      <button onClick={() => joinConversation(7199)}>joinConversation</button>
       <button onClick={() => leaveConversation()}>leaveConversation</button>
       <button onClick={() => leaveConversation()}>leaveConversation</button>
       <button onClick={() => handleWalletConnect()}>handleWalletConnect</button>

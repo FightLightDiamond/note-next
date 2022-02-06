@@ -12,14 +12,14 @@ export const wsSlice = createSlice({
   initialState,
   reducers: {
     connect(state, action: PayloadAction<string>) {
-      alert('Ds' + action.payload)
+      alert('Cn' + action.payload)
     },
     wsDisconnect(state, action: PayloadAction<string>) {
       alert('Ds' + action.payload)
     },
     wsDisconnected(state, action: PayloadAction<string>) {
       state.socket = null
-      alert('Ds' + action.payload)
+      alert('Dst' + action.payload)
     }
   }
 })

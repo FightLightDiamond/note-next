@@ -15,6 +15,14 @@ const leaveConversation = (): void => {
   socket.emit('leaveConversation');
 }
 
+const createRoom = (): void => {
+  socket.emit('createRoom');
+}
+
+const joinRoom = (): void => {
+  socket.off('/chat').emit('joinRoom');
+}
+
 /**
  * Sent Message
  * @param message
@@ -52,8 +60,36 @@ const getNewMessage = (dispatch: any) => {
   socket.on('cronSW', (res) => {
     console.log('cronSW', res)
   })
+  socket.on('room', (res) => {
+    console.log('room', res)
+  })
+  socket.on('roomq', (res) => {
+    console.log('roomq', res)
+  })
+  socket.off('chat').on('pingROm', (res) => {
+    alert('chat pingROm')
+  })
+  socket.on('pingROm', (res) => {
+    alert('pingROm')
+  })
+  socket.on('events', (res) => {
+    console.log('events', res)
+  })
 }
 
+/**
+ * Sent Event
+ */
+const sentEvent = () => {
+  socket.emit('events', { name: 'Nest' }, (response: any) => {
+    console.log('events', response)
+  });
+  socket.emit('identity', 0, (response: any) =>
+    console.log('Identity:', response),
+  );
+}
 
-
-export {getNewMessage, sentMessage, createConversation, joinConversation, leaveConversation}
+export {
+  getNewMessage, sentMessage, createConversation, joinConversation,
+  leaveConversation, sentEvent, createRoom, joinRoom
+}

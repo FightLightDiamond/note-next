@@ -9,7 +9,7 @@ export interface FriendRequestStatus {
   status?: FriendRequest_Status;
 }
 
-export interface FriendRequest {
+export interface FriendRequestEntity {
   id: number;
   creatorId: number;
   receiverId: number;

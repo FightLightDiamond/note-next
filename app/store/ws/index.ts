@@ -1,6 +1,8 @@
 import {io} from "socket.io-client";
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJlbWFpbCI6ImExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2NDAzNDEwMjAsImV4cCI6MTY0MDQyNzQyMH0.Cr_MsrfVVhkVbnX-hkfI2WsntNQm8YT-GoSyqQqrmWc"
-const socket = io("http://localhost:4000", {
+// import {User} from "../../models/user.model";
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJmaXJzdE5hbWUiOm51bGwsImxhc3ROYW1lIjpudWxsLCJlbWFpbCI6ImExQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIn0sImlhdCI6MTY0MzcwOTQ4MywiZXhwIjoxNjQzNzk1ODgzfQ.5m0F_lrjHrFy7ZCSDDqw9SG55l33YyT0hp0yqvDLjA0"
+const socket = io("http://localhost:4000/chat", {
+  path: '/websockets',
   query: { token },
   // extraHeaders: {
   //   Authorization: `${token}`
@@ -15,4 +17,20 @@ const socket = io("http://localhost:4000", {
   // transports: ['polling', 'websocket']
 });
 
-export {socket}
+const alertSocket = io("http://localhost:4000/alert", {
+  path: '/websockets',
+  query: { token },
+  // extraHeaders: {
+  //   Authorization: `${token}`
+  // },
+  transportOptions: {
+    polling: {
+      extraHeaders: {
+        Authorization: `${token}`
+      }
+    }
+  }
+  // transports: ['polling', 'websocket']
+});
+
+export {socket, alertSocket}
