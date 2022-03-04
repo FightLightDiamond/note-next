@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * { margin:0; padding:0; }
+        html, body { width:100%; height:100%; overflow: hidden;}
+        canvas { display:block; }
+        #controls {
+            margin: 20px;
+            position: absolute;
+            top: 0; left: 0;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div id="controls">
+</div>
+<!--
+
+Canvas Orbital Trails v2
+------------------------
+Click and drag anywhere on the screen to create new trails.
+
+-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.min.js" integrity="sha512-NxocnqsXP3zm0Xb42zqVMvjQIktKEpTIbCXXyhBPxqGZHqhcOXHs4pXI/GoZ8lE+2NJONRifuBpi9DxC58L0Lw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    let points = [];
+    let tickSpeed = 10;
+    let base = 180;
+    let numPoints = 10;
+    let maxTicks = 3000;
+    let ticks = 0;
+
+
+
+    function Point(x = random(width), y = random(height), a = random(PI)){
+        console.log(width, height, PI)
+        this.x = x;
+        this.y = y;
+        this.a = a;
+        this.dx = cos(a);
+        this.dy = sin(a);
+        this.hue = (random(100) + base)%360;
+        this.color = color(this.hue, 100, 100, .01);
+    }
+
+    Point.prototype.update = function(){
+        this.x += this.dx;
+        this.y += this.dy;
+        if (this.x < 0 || this.x >= width) this.dx *= -1;
+        if (this.y < 0 || this.y >= height) this.dy *= -1;
+        // console.log('coler')
+        stroke(this.color);
+        line(this.x, this.y, this.neighbor.x, this.neighbor.y);
+        console.log(this.color, this.x, this.y, this.neighbor.x, this.neighbor.y)
+    }
+
+    let c
+
+    function setup(){
+        c = createCanvas();
+        colorMode(HSB);
+        windowResized();
+        blendMode(ADD);
+        strokeWeight(1.5);
+
+    }
+
+    function init(){
+        points = [];
+        base = random(360);
+        ticks = 0;
+
+        for (var i = 0; i < numPoints; i++) points.push(new Point());
+
+        for (var i = 0; i < points.length; i++){
+            let j = i;
+            while(j == i) j = floor(random(points.length));
+            points[i].neighbor = points[j];
+        }
+    }
+
+    function draw(){
+        if (ticks > maxTicks) return;
+        for (var n = 0; n < tickSpeed; n++){
+            for (var i = 0; i < points.length; i++){
+                points[i].update();
+            }
+            ticks++;
+        }
+    }
+
+    function mouseClicked(){
+        windowResized();
+    }
+
+    function windowResized() {
+        resizeCanvas(windowWidth, windowHeight);
+        pixelDensity(1);
+        clear();
+        background(0);
+        init();
+    }
+
+    function keyTyped() {
+        if (key === 's') {
+            console.log({c})
+            console.log(c.toDataURL())
+            saveCanvas(c, 'myCanvas.jpg');
+        }
+    }
+
+</script>
+</body>
+</html>
